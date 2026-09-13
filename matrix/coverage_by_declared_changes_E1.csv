@@ -1,0 +1,21 @@
+Row,Declared since the incident,Status
+0 write surface,"OpenAI: Artifactory rebuilt, agent credentials revoked, access controls tightened (8 July); ""more isolated sandboxes"" for untrusted code [4]",partly — no statement of the write surfaces a sandbox can reach
+0 detection,"OpenAI: chain-of-thought monitoring required for tool-using RL and evaluations; automated alerts page researchers and security engineers; escalation rules and the 30-minute rule for the most severe alerts [4]; cross-run coordination named as a trigger [4, 5]",declared
+A,OpenAI: network isolation built so that a single compromise does not by itself give internet or internal-network access [4],declared in substance; brokered allow-list and canary not stated
+B,HF: the evaluation sandbox shut down with the provider's help [1],the one endpoint closed; no standing inventory declared
+C,HF: both code-execution paths closed [1],declared
+C/F,HF: metadata access blocked at pod level for all workloads [1],declared
+D,"HF: stricter network-origin enforcement [1]; the 4× under-count stated, no change to scanning declared",partly
+E,—,not declared
+F1,HF: workload identity where not yet present; tooling flags tokens used from unexpected origins [1],declared
+F4,HF names the two settings as what enabled the escalation; they are not among its six hardening areas [1],not declared
+F5,HF: credentials rotated broadly; workload identity [1],partly — the absence of static passwords from pod environments is not stated
+F6,—,not declared
+F8,HF: connector rebuilt; clusters isolated with cluster-scoped credentials [1],declared
+G enrolment,— (HF's stricter network-origin enforcement is not specific to enrolment),not declared
+G app scopes / CI,"HF: the CI execution policy held, an existing control; narrower app scopes not stated [1]",partly
+H,—,not declared
+I,HF: critical-severity alerting on behavioural signatures [1]; OpenAI: paging alerts and escalation rules [4],declared
+7,— (the investigation's own limitation stands [6]),not declared
+8,HF: the analysis rerouted to a self-hosted open-weights model during the response [1],"practised in the response, not declared as a standing path"
+9,"OpenAI: graders reward identifying broken tasks, requesting clarification and stopping safely; 198 of 898 ExploitGym tasks had never been solved [4]",declared

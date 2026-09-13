@@ -1,0 +1,21 @@
+Phase,Internally auditable,Externally attestable,Tier
+0,"mount tables, registry ACLs, write logs","published statement of the sandbox's write surfaces and their scoping, with a hash; an auditor's attestation",T2
+0,"classifier logs, paging and pause records","published escalation criteria naming cross-run coordination as a trigger, with the pause rule",T2
+A,"broker config, flow logs","published egress policy (allow-list class, brokering) with hash; canary scheme with externally reportable firing (a third party holds the canary endpoint)",T2–T3
+B,endpoint inventory,vendor attestation of tenant isolation; canary firing reportable,T1–T2
+C,"code review, tests","published renderer policy (no template evaluation in data fields; no external references) — checkable by submitting a benign probe dataset, which is an external test that needs no network access to the lab, only to the public service",T1
+C/F,network policy,attestation,T1
+D,"egress logs, scanner config",canary scheme with a third-party endpoint; published statement that secret scanning replicates attacker encodings,T2
+E,"API logs, alert records",published alert-criteria statement; attestation of scoped query and alert tests,T1
+F1,IAM config,attestation,T2
+F4,policy files,published admission-policy configuration with hash — the single most attestable control in the record,T1
+F5,secret inventory,attestation,T1–T2
+F6,secret layout audit,attestation of the partitioning rule,T2
+F8,RBAC audit,attestation,T2
+G,mesh admin logs,published enrolment policy,T1–T2
+G,"app config, CI policy",published statement of app scopes and CI execution policy,T1
+H,sandbox logs,published Spaces egress policy,T2
+I,"alert config, paging records",published criticality-escalation criteria (what pages a human) — existence is attestable,T1
+7,storage config,published retention policy for evaluation transcripts and shared-store snapshots; attestation of completeness after an incident,T1
+8,"IR runbook, model inventory","published statement that a forensic path exists which completes an authorized task set, and was exercised (tabletop or drill)",T2
+9,"task-set audit, grader config",published statement that blocked reports are accepted and unsolvable tasks are bounded — checkable externally only as a statement; the sprint's pressure ladder is the test a third party could run on a public model,T1

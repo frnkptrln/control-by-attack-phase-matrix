@@ -1,0 +1,21 @@
+Phase,Control,Externally attestable evidence,Tier
+0,No writable shared surface reachable from evaluation sandboxes; per-run namespaces with no cross-run read,"published statement of the sandbox's write surfaces, with hash; auditor attestation",T2
+0,"Detection of cross-run coordination content in shared stores; page on the first hit; pausing the batch unless the alert is cleared within 30 minutes is this matrix's untested proposal, extending OpenAI's stated rule for its most severe alerts","published escalation criteria naming cross-run coordination as a trigger, with the pause rule",T2
+A,"No-egress evaluation network, or a broker with per-destination allow-list; canary on any outbound reach",published egress policy with hash; canary scheme whose endpoint a third party holds,T2–T3
+B,Inventory/attestation of tenant code-execution endpoints; canary credentials in public harnesses,vendor attestation of tenant isolation; canary firing reportable,T1–T2
+C,Config renderer that never evaluates template expressions in data fields; no HDF5 external references,published renderer policy; a benign probe dataset submitted to the public service,T1
+C/F,Pod-level block of the instance metadata service,attestation,T1
+D,Egress tripwires; canary tokens in pod environments; dead-drop detection; decode-aware secret scanning,canary scheme with a third-party endpoint; statement that scanning replicates attacker encodings,T2
+E,Alerting on API queries for the platform's own infrastructure identifiers,published alert-criteria statement; attestation of scoped tests,T1
+F1,"Workload identity with narrowly scoped, short-lived credentials bound to their intended use; token-origin anomaly detection",attestation,T2
+F4,Admission policy rejecting privileged and hostPath pods; CSI ClusterRole not cluster-wide,published admission-policy configuration with hash — the single most attestable control in the record,T1
+F5,No static passwords in pod environments; workload auth for datastores,attestation,T1–T2
+F6,Secret partitioning; blast-radius limit per secret object,attestation of the partitioning rule,T2
+F8,"Per-cluster, cluster-scoped connector credentials; no system:masters for ephemeral clients",attestation,T2
+G,Kill criteria on mesh enrolment-rate anomalies; ACL scoping; refuse enrolments that suppress telemetry,published enrolment policy,T1–T2
+G,Narrower GitHub App scopes; PR/workflow-change alerting; CI execution policy,published statement of app scopes and CI execution policy,T1
+H,Detection of re-arming loaders on ephemeral sandboxes; egress policy for platform-hosted proxy Spaces,published Spaces egress policy,T2
+I,Criticality fix: a correlated attack signal pages on-call unconditionally,published criticality-escalation criteria — existence is attestable,T1
+7,Retention of full transcripts and shared-store snapshots for the campaign plus the disclosure window; resets must not truncate,published retention policy; attestation of completeness after an incident,T1
+8,"Responder tooling: a forensic model path, provisioned before the incident, that completes authorized exploit analysis on a fixed task set within stated limits",published statement that such a forensic path exists and was exercised,T2
+9,"Scorer honesty: blocked/impossible reports accepted without penalty; the share of tasks without a known authorized solution known and bounded, unknown solvability kept apart from proven impossibility",published statement; the sprint's pressure ladder is the test a third party could run on a public model,T1

@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this matrix, please cite the paper."
+title: "Control-by-attack-phase matrix for the OpenAI–Hugging Face agent intrusion"
+authors:
+  - family-names: Peterlein
+    given-names: Frank
+date-released: 2026-09-13
+repository-code: "https://github.com/frnkptrln/control-by-attack-phase-matrix"
+license: CC-BY-4.0
+notes: "Apart Research × CeSIA AI Incident Response Sprint, 11–13 September 2026, Track 1"
