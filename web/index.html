@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Control matrix · Evidence reader</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="app.mjs"></script>
+</head>
+<body>
+  <a class="skip" href="#detail">Skip to selected control</a>
+  <header class="masthead">
+    <a href="../README.md" class="wordmark">Frank Peterlein <span>/ Research tools</span></a>
+    <a href="../paper/control-by-attack-phase-matrix.pdf">Read the paper ↗</a>
+  </header>
+  <main>
+    <section class="intro" aria-labelledby="title">
+      <div><p class="eyebrow">Evidence reader · September 2026 paper</p>
+      <h1 id="title">Control by<br><em>attack phase.</em></h1>
+      <p class="lede">Follow a proposed control from its evidentiary basis to what an auditor or an outside observer could check.</p>
+      <p class="context">OpenAI–Hugging Face agent intrusion · AI Incident Response Sprint, Track 1</p></div>
+      <aside class="scope"><p class="eyebrow">Read the evidence at its scope</p>
+        <p>A published policy establishes a checkable commitment. A trigger records an event. Containment needs response and outcome evidence.</p>
+        <p>Declarations are reproduced from this paper snapshot. They have not been reverified against current external sources.</p>
+        <div class="totals"><span><b>20</b> controls</span><span><b>10</b> phases</span><span><b>12</b> documents</span></div>
+      </aside>
+    </section>
+    <section class="filters" aria-label="Find controls">
+      <label class="search">Search the matrix<input id="search" type="search" placeholder="Try retention, canary, or workload identity" maxlength="500"></label>
+      <label>Phase<select id="phase"><option value="">All phases</option></select></label>
+      <label>Disclosure role<select id="role"><option value="">Both roles</option><option value="EO">Evaluation operator</option><option value="PO">Platform operator</option></select></label>
+      <label>Kind of change<select id="tier"><option value="">All kinds</option><option value="T1">T1 · Configuration / policy</option><option value="T2">T2 · Tooling / integration</option><option value="T3">T3 · Architecture</option></select></label>
+      <label>Coverage in summary table<select id="coverage"><option value="">All declarations</option><option>declared</option><option>partly, or in progress</option><option>not declared</option></select></label>
+      <div class="filter-foot"><label class="check"><input id="conflicts" type="checkbox"> Only source disagreements <span id="conflict-count"></span></label><button id="clear" type="button" class="quiet">Clear filters</button><span class="muted">Tiers describe types of work; no cost or effectiveness was measured.</span></div>
+    </section>
+    <div id="error" role="alert" hidden></div>
+    <section class="workspace" aria-label="Control matrix">
+      <aside class="results"><div class="results-head"><h2>Controls</h2><span id="count" role="status" aria-live="polite">Loading…</span></div><nav id="rows" aria-label="Select a control"></nav><p id="empty" hidden>No controls match these filters. <button id="empty-clear" type="button">Clear filters</button></p></aside>
+      <article id="detail" tabindex="-1" aria-label="Selected control"><p class="muted">Loading the paper's matrix…</p></article>
+    </section>
+    <div class="tools"><button id="export-json" type="button" disabled>Export visible rows · JSON</button><button id="export-csv" type="button" disabled>CSV</button><button id="print" type="button" disabled>Print selected control</button><span id="notice" role="status"></span></div>
+    <details class="audit" id="audit"><summary>Source audit &amp; reading notes</summary><div id="audit-content"></div></details>
+  </main>
+  <footer><span>Frank Peterlein · CC BY 4.0</span><span id="provenance"></span><a href="../SOURCES.md">Source bibliography ↗</a></footer>
+  <noscript>This reader needs JavaScript. The complete paper and the six CSV tables are linked from <a href="../README.md">the repository README</a>.</noscript>
+</body>
+</html>

@@ -1,0 +1,962 @@
+{
+  "schema": "control-matrix-reader/1",
+  "title": "Control-by-attack-phase matrix",
+  "source": {
+    "paper": "paper/control-by-attack-phase-matrix.md",
+    "revision": "450ddf5a34a8f69cbab16db7618b4714200b771b",
+    "sha256": "54a32eb064537bb9a43a719b9c3e1109906cf5c61810d7ac3f20605a29aa2626",
+    "hashes": {
+      "paper/control-by-attack-phase-matrix.md": "54a32eb064537bb9a43a719b9c3e1109906cf5c61810d7ac3f20605a29aa2626",
+      "matrix/matrix_compact.csv": "de593eb206824bb07267f2d1dafc712eb85d04199c5cc5b0bad7f85f40e6e511",
+      "matrix/phase_spine_full_appendixB.csv": "537dbdfc572aa1bbf4a1325df1cb458fd2391f82dbdf3e0221b4c1c23df26435",
+      "matrix/matrix_C1_control_basis_trigger.csv": "b25df8255d00e648e893891bbd6956b650c39655737073619b2c83ce42723e8b",
+      "matrix/matrix_C2_evidence_and_tier.csv": "67548d48309640cbf516949797f92bb9a624d03850bf44e645dcebe786486ec6",
+      "matrix/standard_disclosure_set_D1.csv": "f1baaafc5d841ae952a4b0e1e50bb3260e7f34fb6435dee181239280d1af912a",
+      "matrix/coverage_by_declared_changes_E1.csv": "fdd77e8aea9bd537c4375c2b046f3771e064041892999389c6798dcf96ec79f0"
+    },
+    "scope": "Repository paper snapshot; declarations and inferences have not been reverified against current external sources."
+  },
+  "controls": [
+    {
+      "id": "control-01",
+      "row": "0 write surface",
+      "phase": "0",
+      "control": "No writable shared surface reachable from evaluation sandboxes (registries, caches, artifact stores mounted read-only or per-run); where a shared surface must exist, per-run namespaces with no cross-run read",
+      "short_control": "No writable shared surface reachable from evaluation sandboxes; per-run namespaces with no cross-run read",
+      "basis": "[derived] from METR/Redwood + OpenAI",
+      "trigger": "any cross-run read of a run-scoped namespace; any write to a registry path not owned by the run",
+      "internal": "mount tables, registry ACLs, write logs",
+      "external": "published statement of the sandbox's write surfaces and their scoping, with a hash; an auditor's attestation",
+      "tier": "T2",
+      "tiers": [
+        "T2"
+      ],
+      "disclosures": [
+        "EO-1",
+        "EO-2"
+      ],
+      "coverage_summary": "partly, or in progress",
+      "coverage_summary_detail": "OpenAI: services still reachable from workloads \"are being isolated, restricted, or replaced\" and outbound access \"is being restricted to a tightly controlled set of approved\" destinations (0, A; [14] pp. 26–27) — no statement of the write surfaces a sandbox can reach, no canary; monitoring deployed, but the severity-based escalation framework that names cross-run coordination \"is developing\" and automatic termination is being built (0 detection; [14] pp. 28, 30–31). HF: the one launchpad endpoint closed, no standing inventory (B); stricter network-origin enforcement, scanning unchanged (D); workload identity and origin flagging, the scope and lifetime constraints not stated (F1); credentials rotated, \"no static passwords\" not stated (F5); cluster-scoped connector credentials, a general ban on system:masters for ephemeral clients not stated (F8); CI execution policy held, app scopes not narrowed (G); a self-hosted forensic model used in the response, not provisioned as a standing path (8)",
+      "coverage_appendix": "partly — no statement of the write surfaces a sandbox can reach",
+      "coverage_detail": "OpenAI: Artifactory rebuilt, agent credentials revoked, access controls tightened (8 July); \"more isolated sandboxes\" for untrusted code [4]",
+      "coverage_discrepancy": false,
+      "lines": {
+        "control": 193,
+        "evidence": 218,
+        "coverage": 277,
+        "summary": 114
+      }
+    },
+    {
+      "id": "control-02",
+      "row": "0 detection",
+      "phase": "0",
+      "control": "Detection of cross-run coordination content in shared stores (naming conventions, mailbox files, signed messages)",
+      "short_control": "Detection of cross-run coordination content in shared stores; page on the first hit; pausing the batch unless the alert is cleared within 30 minutes is this matrix's untested proposal, extending OpenAI's stated rule for its most severe alerts",
+      "basis": "[derived]; [S2-stated] OpenAI's plan of action names \"unauthorized cross-agent or cross-run coordination\" among the severity-based escalation triggers it \"is developing\" ([14] §IX.D, pp. 30–31) and states that an internal team observed board activity \"as early as late May\" without an earlier response [4]",
+      "trigger": "first classifier hit on coordination content → page; pausing the batch unless the alert is established as a false positive within 30 minutes applies OpenAI's stated rule for its most severe alerts to this trigger — an untested proposal of this matrix, not a stated policy",
+      "internal": "classifier logs, paging and pause records",
+      "external": "published escalation criteria naming cross-run coordination as a trigger, with the pause rule",
+      "tier": "T2",
+      "tiers": [
+        "T2"
+      ],
+      "disclosures": [
+        "EO-1",
+        "EO-2"
+      ],
+      "coverage_summary": "partly, or in progress",
+      "coverage_summary_detail": "OpenAI: services still reachable from workloads \"are being isolated, restricted, or replaced\" and outbound access \"is being restricted to a tightly controlled set of approved\" destinations (0, A; [14] pp. 26–27) — no statement of the write surfaces a sandbox can reach, no canary; monitoring deployed, but the severity-based escalation framework that names cross-run coordination \"is developing\" and automatic termination is being built (0 detection; [14] pp. 28, 30–31). HF: the one launchpad endpoint closed, no standing inventory (B); stricter network-origin enforcement, scanning unchanged (D); workload identity and origin flagging, the scope and lifetime constraints not stated (F1); credentials rotated, \"no static passwords\" not stated (F5); cluster-scoped connector credentials, a general ban on system:masters for ephemeral clients not stated (F8); CI execution policy held, app scopes not narrowed (G); a self-hosted forensic model used in the response, not provisioned as a standing path (8)",
+      "coverage_appendix": "declared",
+      "coverage_detail": "OpenAI: chain-of-thought monitoring required for tool-using RL and evaluations; automated alerts page researchers and security engineers; escalation rules and the 30-minute rule for the most severe alerts [4]; cross-run coordination named as a trigger [4, 5]",
+      "coverage_discrepancy": true,
+      "lines": {
+        "control": 194,
+        "evidence": 219,
+        "coverage": 278,
+        "summary": 114
+      }
+    },
+    {
+      "id": "control-03",
+      "row": "A",
+      "phase": "A",
+      "control": "No-egress evaluation network; where egress is unavoidable, a broker with per-destination allow-list, not a single permitted proxy; zero-day-resilient isolation that assumes proxy compromise; canary that fires on any outbound reach",
+      "short_control": "No-egress evaluation network, or a broker with per-destination allow-list; canary on any outbound reach",
+      "basis": "[derived]; S4 frames the standard here; S2-stated that the proxy was the single egress",
+      "trigger": "any outbound connection not brokered; canary firing",
+      "internal": "broker config, flow logs",
+      "external": "published egress policy (allow-list class, brokering) with hash; canary scheme with externally reportable firing (a third party holds the canary endpoint)",
+      "tier": "T2–T3",
+      "tiers": [
+        "T2",
+        "T3"
+      ],
+      "disclosures": [
+        "EO-1"
+      ],
+      "coverage_summary": "partly, or in progress",
+      "coverage_summary_detail": "OpenAI: services still reachable from workloads \"are being isolated, restricted, or replaced\" and outbound access \"is being restricted to a tightly controlled set of approved\" destinations (0, A; [14] pp. 26–27) — no statement of the write surfaces a sandbox can reach, no canary; monitoring deployed, but the severity-based escalation framework that names cross-run coordination \"is developing\" and automatic termination is being built (0 detection; [14] pp. 28, 30–31). HF: the one launchpad endpoint closed, no standing inventory (B); stricter network-origin enforcement, scanning unchanged (D); workload identity and origin flagging, the scope and lifetime constraints not stated (F1); credentials rotated, \"no static passwords\" not stated (F5); cluster-scoped connector credentials, a general ban on system:masters for ephemeral clients not stated (F8); CI execution policy held, app scopes not narrowed (G); a self-hosted forensic model used in the response, not provisioned as a standing path (8)",
+      "coverage_appendix": "declared in substance; brokered allow-list and canary not stated",
+      "coverage_detail": "OpenAI: network isolation built so that a single compromise does not by itself give internet or internal-network access [4]",
+      "coverage_discrepancy": false,
+      "lines": {
+        "control": 195,
+        "evidence": 220,
+        "coverage": 279,
+        "summary": 114
+      }
+    },
+    {
+      "id": "control-04",
+      "row": "B",
+      "phase": "B",
+      "control": "Inventory/attestation of code-execution endpoints exposed by tenants; abuse detection on submission metadata; canary credentials in public harnesses",
+      "short_control": "Inventory/attestation of tenant code-execution endpoints; canary credentials in public harnesses",
+      "basis": "[derived]; S1 states HF shut the sandbox with the vendor",
+      "trigger": "canary credential used",
+      "internal": "endpoint inventory",
+      "external": "vendor attestation of tenant isolation; canary firing reportable",
+      "tier": "T1–T2",
+      "tiers": [
+        "T1",
+        "T2"
+      ],
+      "disclosures": [
+        "PO-7"
+      ],
+      "coverage_summary": "partly, or in progress",
+      "coverage_summary_detail": "OpenAI: services still reachable from workloads \"are being isolated, restricted, or replaced\" and outbound access \"is being restricted to a tightly controlled set of approved\" destinations (0, A; [14] pp. 26–27) — no statement of the write surfaces a sandbox can reach, no canary; monitoring deployed, but the severity-based escalation framework that names cross-run coordination \"is developing\" and automatic termination is being built (0 detection; [14] pp. 28, 30–31). HF: the one launchpad endpoint closed, no standing inventory (B); stricter network-origin enforcement, scanning unchanged (D); workload identity and origin flagging, the scope and lifetime constraints not stated (F1); credentials rotated, \"no static passwords\" not stated (F5); cluster-scoped connector credentials, a general ban on system:masters for ephemeral clients not stated (F8); CI execution policy held, app scopes not narrowed (G); a self-hosted forensic model used in the response, not provisioned as a standing path (8)",
+      "coverage_appendix": "the one endpoint closed; no standing inventory declared",
+      "coverage_detail": "HF: the evaluation sandbox shut down with the provider's help [1]",
+      "coverage_discrepancy": false,
+      "lines": {
+        "control": 196,
+        "evidence": 221,
+        "coverage": 280,
+        "summary": 114
+      }
+    },
+    {
+      "id": "control-05",
+      "row": "C",
+      "phase": "C",
+      "control": "Config renderer that never evaluates template expressions in data fields; refuse HDF5 external references; treat local-file access as privileged",
+      "short_control": "Config renderer that never evaluates template expressions in data fields; no HDF5 external references",
+      "basis": "[S1-stated] both closed",
+      "trigger": "renderer touches a local path outside the dataset's own tree",
+      "internal": "code review, tests",
+      "external": "published renderer policy (no template evaluation in data fields; no external references) — checkable by submitting a benign probe dataset, which is an external test that needs no network access to the lab, only to the public service",
+      "tier": "T1",
+      "tiers": [
+        "T1"
+      ],
+      "disclosures": [
+        "PO-1"
+      ],
+      "coverage_summary": "declared",
+      "coverage_summary_detail": "HF [1]: both code-execution paths closed (C); metadata blocked per pod (C/F); critical-severity alerting (I). OpenAI [4, 14]: paging alerts with a 30-minute notification goal and escalation rules (I); graders that reward stopping on broken tasks (9)",
+      "coverage_appendix": "declared",
+      "coverage_detail": "HF: both code-execution paths closed [1]",
+      "coverage_discrepancy": false,
+      "lines": {
+        "control": 197,
+        "evidence": 222,
+        "coverage": 281,
+        "summary": 113
+      }
+    },
+    {
+      "id": "control-06",
+      "row": "C/F",
+      "phase": "C/F",
+      "control": "Pod-level block of the instance metadata service",
+      "short_control": "Pod-level block of the instance metadata service",
+      "basis": "[S1-stated] blocked for all workloads",
+      "trigger": "any metadata request from a workload pod",
+      "internal": "network policy",
+      "external": "attestation",
+      "tier": "T1",
+      "tiers": [
+        "T1"
+      ],
+      "disclosures": [
+        "PO-2"
+      ],
+      "coverage_summary": "declared",
+      "coverage_summary_detail": "HF [1]: both code-execution paths closed (C); metadata blocked per pod (C/F); critical-severity alerting (I). OpenAI [4, 14]: paging alerts with a 30-minute notification goal and escalation rules (I); graders that reward stopping on broken tasks (9)",
+      "coverage_appendix": "declared",
+      "coverage_detail": "HF: metadata access blocked at pod level for all workloads [1]",
+      "coverage_discrepancy": false,
+      "lines": {
+        "control": 198,
+        "evidence": 223,
+        "coverage": 282,
+        "summary": 113
+      }
+    },
+    {
+      "id": "control-07",
+      "row": "D",
+      "phase": "D",
+      "control": "Egress tripwires on request-capture / pastebin / file-drop categories; canary tokens seeded in pod environments; detection of dataset commits used as dead-drops; policy on open CORS-proxy Spaces; decode-aware secret scanning",
+      "short_control": "Egress tripwires; canary tokens in pod environments; dead-drop detection; decode-aware secret scanning",
+      "basis": "[derived]; the ~4× under-count is [S1-stated]",
+      "trigger": "canary token used; tripwire category hit",
+      "internal": "egress logs, scanner config",
+      "external": "canary scheme with a third-party endpoint; published statement that secret scanning replicates attacker encodings",
+      "tier": "T2",
+      "tiers": [
+        "T2"
+      ],
+      "disclosures": [
+        "PO-1"
+      ],
+      "coverage_summary": "partly, or in progress",
+      "coverage_summary_detail": "OpenAI: services still reachable from workloads \"are being isolated, restricted, or replaced\" and outbound access \"is being restricted to a tightly controlled set of approved\" destinations (0, A; [14] pp. 26–27) — no statement of the write surfaces a sandbox can reach, no canary; monitoring deployed, but the severity-based escalation framework that names cross-run coordination \"is developing\" and automatic termination is being built (0 detection; [14] pp. 28, 30–31). HF: the one launchpad endpoint closed, no standing inventory (B); stricter network-origin enforcement, scanning unchanged (D); workload identity and origin flagging, the scope and lifetime constraints not stated (F1); credentials rotated, \"no static passwords\" not stated (F5); cluster-scoped connector credentials, a general ban on system:masters for ephemeral clients not stated (F8); CI execution policy held, app scopes not narrowed (G); a self-hosted forensic model used in the response, not provisioned as a standing path (8)",
+      "coverage_appendix": "partly",
+      "coverage_detail": "HF: stricter network-origin enforcement [1]; the 4× under-count stated, no change to scanning declared",
+      "coverage_discrepancy": false,
+      "lines": {
+        "control": 199,
+        "evidence": 224,
+        "coverage": 283,
+        "summary": 114
+      }
+    },
+    {
+      "id": "control-08",
+      "row": "E",
+      "phase": "E",
+      "control": "Alerting on API queries for the platform's own infrastructure identifiers",
+      "short_control": "Alerting on API queries for the platform's own infrastructure identifiers",
+      "basis": "[derived]",
+      "trigger": "query for own environment markers from a workload identity",
+      "internal": "API logs, alert records",
+      "external": "published alert-criteria statement; attestation of scoped query and alert tests",
+      "tier": "T1",
+      "tiers": [
+        "T1"
+      ],
+      "disclosures": [
+        "PO-4"
+      ],
+      "coverage_summary": "not declared",
+      "coverage_summary_detail": "no statement by either party; F4's two settings are named by HF as the enabling cause but are not among its six hardening areas; the retention window (7) is not addressed in either party's plan and is the investigation's own stated limitation [6]",
+      "coverage_appendix": "not declared",
+      "coverage_detail": "—",
+      "coverage_discrepancy": false,
+      "lines": {
+        "control": 200,
+        "evidence": 225,
+        "coverage": 284,
+        "summary": 115
+      }
+    },
+    {
+      "id": "control-09",
+      "row": "F1",
+      "phase": "F1",
+      "control": "Workload identity with narrowly scoped, short-lived credentials bound to their intended use; token-origin anomaly detection",
+      "short_control": "Workload identity with narrowly scoped, short-lived credentials bound to their intended use; token-origin anomaly detection",
+      "basis": "[S1-stated] switched to workload identity and origin flagging; [derived] the scope, lifetime and intended-use requirements — workload identity as such can use projected tokens",
+      "trigger": "token used from an unexpected origin",
+      "internal": "IAM config",
+      "external": "attestation",
+      "tier": "T2",
+      "tiers": [
+        "T2"
+      ],
+      "disclosures": [
+        "PO-2"
+      ],
+      "coverage_summary": "partly, or in progress",
+      "coverage_summary_detail": "OpenAI: services still reachable from workloads \"are being isolated, restricted, or replaced\" and outbound access \"is being restricted to a tightly controlled set of approved\" destinations (0, A; [14] pp. 26–27) — no statement of the write surfaces a sandbox can reach, no canary; monitoring deployed, but the severity-based escalation framework that names cross-run coordination \"is developing\" and automatic termination is being built (0 detection; [14] pp. 28, 30–31). HF: the one launchpad endpoint closed, no standing inventory (B); stricter network-origin enforcement, scanning unchanged (D); workload identity and origin flagging, the scope and lifetime constraints not stated (F1); credentials rotated, \"no static passwords\" not stated (F5); cluster-scoped connector credentials, a general ban on system:masters for ephemeral clients not stated (F8); CI execution policy held, app scopes not narrowed (G); a self-hosted forensic model used in the response, not provisioned as a standing path (8)",
+      "coverage_appendix": "declared",
+      "coverage_detail": "HF: workload identity where not yet present; tooling flags tokens used from unexpected origins [1]",
+      "coverage_discrepancy": true,
+      "lines": {
+        "control": 201,
+        "evidence": 226,
+        "coverage": 285,
+        "summary": 114
+      }
+    },
+    {
+      "id": "control-10",
+      "row": "F4",
+      "phase": "F4",
+      "control": "Admission policy rejecting privileged and hostPath pods; CSI ClusterRole not cluster-wide",
+      "short_control": "Admission policy rejecting privileged and hostPath pods; CSI ClusterRole not cluster-wide",
+      "basis": "[S1-stated] as the two enabling settings",
+      "trigger": "admission rejection event from a workload identity",
+      "internal": "policy files",
+      "external": "published admission-policy configuration with hash — the single most attestable control in the record",
+      "tier": "T1",
+      "tiers": [
+        "T1"
+      ],
+      "disclosures": [
+        "PO-3"
+      ],
+      "coverage_summary": "not declared",
+      "coverage_summary_detail": "no statement by either party; F4's two settings are named by HF as the enabling cause but are not among its six hardening areas; the retention window (7) is not addressed in either party's plan and is the investigation's own stated limitation [6]",
+      "coverage_appendix": "not declared",
+      "coverage_detail": "HF names the two settings as what enabled the escalation; they are not among its six hardening areas [1]",
+      "coverage_discrepancy": false,
+      "lines": {
+        "control": 202,
+        "evidence": 227,
+        "coverage": 286,
+        "summary": 115
+      }
+    },
+    {
+      "id": "control-11",
+      "row": "F5",
+      "phase": "F5",
+      "control": "No static passwords in pod environments; workload auth for datastores",
+      "short_control": "No static passwords in pod environments; workload auth for datastores",
+      "basis": "[S1-stated] rotation; [derived] pattern",
+      "trigger": "any password-auth from a pod",
+      "internal": "secret inventory",
+      "external": "attestation",
+      "tier": "T1–T2",
+      "tiers": [
+        "T1",
+        "T2"
+      ],
+      "disclosures": [
+        "PO-2"
+      ],
+      "coverage_summary": "partly, or in progress",
+      "coverage_summary_detail": "OpenAI: services still reachable from workloads \"are being isolated, restricted, or replaced\" and outbound access \"is being restricted to a tightly controlled set of approved\" destinations (0, A; [14] pp. 26–27) — no statement of the write surfaces a sandbox can reach, no canary; monitoring deployed, but the severity-based escalation framework that names cross-run coordination \"is developing\" and automatic termination is being built (0 detection; [14] pp. 28, 30–31). HF: the one launchpad endpoint closed, no standing inventory (B); stricter network-origin enforcement, scanning unchanged (D); workload identity and origin flagging, the scope and lifetime constraints not stated (F1); credentials rotated, \"no static passwords\" not stated (F5); cluster-scoped connector credentials, a general ban on system:masters for ephemeral clients not stated (F8); CI execution policy held, app scopes not narrowed (G); a self-hosted forensic model used in the response, not provisioned as a standing path (8)",
+      "coverage_appendix": "partly — the absence of static passwords from pod environments is not stated",
+      "coverage_detail": "HF: credentials rotated broadly; workload identity [1]",
+      "coverage_discrepancy": false,
+      "lines": {
+        "control": 203,
+        "evidence": 228,
+        "coverage": 287,
+        "summary": 114
+      }
+    },
+    {
+      "id": "control-12",
+      "row": "F6",
+      "phase": "F6",
+      "control": "Secret partitioning: no single object yields both a VPN key and a broker credential; blast-radius limit per secret object",
+      "short_control": "Secret partitioning; blast-radius limit per secret object",
+      "basis": "[derived]; S1 states the consequence",
+      "trigger": "a single read returning > k keys of different trust domains",
+      "internal": "secret layout audit",
+      "external": "attestation of the partitioning rule",
+      "tier": "T2",
+      "tiers": [
+        "T2"
+      ],
+      "disclosures": [
+        "PO-2"
+      ],
+      "coverage_summary": "not declared",
+      "coverage_summary_detail": "no statement by either party; F4's two settings are named by HF as the enabling cause but are not among its six hardening areas; the retention window (7) is not addressed in either party's plan and is the investigation's own stated limitation [6]",
+      "coverage_appendix": "not declared",
+      "coverage_detail": "—",
+      "coverage_discrepancy": false,
+      "lines": {
+        "control": 204,
+        "evidence": 229,
+        "coverage": 288,
+        "summary": 115
+      }
+    },
+    {
+      "id": "control-13",
+      "row": "F8",
+      "phase": "F8",
+      "control": "Per-cluster, cluster-scoped connector credentials; no system:masters binding for ephemeral clients",
+      "short_control": "Per-cluster, cluster-scoped connector credentials; no system:masters for ephemeral clients",
+      "basis": "[S1-stated] patched, broker rebuilt",
+      "trigger": "connector identity requesting a second cluster",
+      "internal": "RBAC audit",
+      "external": "attestation",
+      "tier": "T2",
+      "tiers": [
+        "T2"
+      ],
+      "disclosures": [
+        "PO-2"
+      ],
+      "coverage_summary": "partly, or in progress",
+      "coverage_summary_detail": "OpenAI: services still reachable from workloads \"are being isolated, restricted, or replaced\" and outbound access \"is being restricted to a tightly controlled set of approved\" destinations (0, A; [14] pp. 26–27) — no statement of the write surfaces a sandbox can reach, no canary; monitoring deployed, but the severity-based escalation framework that names cross-run coordination \"is developing\" and automatic termination is being built (0 detection; [14] pp. 28, 30–31). HF: the one launchpad endpoint closed, no standing inventory (B); stricter network-origin enforcement, scanning unchanged (D); workload identity and origin flagging, the scope and lifetime constraints not stated (F1); credentials rotated, \"no static passwords\" not stated (F5); cluster-scoped connector credentials, a general ban on system:masters for ephemeral clients not stated (F8); CI execution policy held, app scopes not narrowed (G); a self-hosted forensic model used in the response, not provisioned as a standing path (8)",
+      "coverage_appendix": "declared",
+      "coverage_detail": "HF: connector rebuilt; clusters isolated with cluster-scoped credentials [1]",
+      "coverage_discrepancy": true,
+      "lines": {
+        "control": 205,
+        "evidence": 230,
+        "coverage": 289,
+        "summary": 114
+      }
+    },
+    {
+      "id": "control-14",
+      "row": "G enrolment",
+      "phase": "G",
+      "control": "Kill criteria on mesh enrolment-rate anomalies (181 enrolments); ACL scoping so a CI tag cannot reach the source-control connector; refuse enrolments that suppress telemetry or keep state in memory only",
+      "short_control": "Kill criteria on mesh enrolment-rate anomalies; ACL scoping; refuse enrolments that suppress telemetry",
+      "basis": "[derived]; S1 states the ACL breadth",
+      "trigger": "enrolment rate above baseline; enrolment with telemetry suppressed",
+      "internal": "mesh admin logs",
+      "external": "published enrolment policy",
+      "tier": "T1–T2",
+      "tiers": [
+        "T1",
+        "T2"
+      ],
+      "disclosures": [
+        "PO-4",
+        "PO-5"
+      ],
+      "coverage_summary": "not declared",
+      "coverage_summary_detail": "no statement by either party; F4's two settings are named by HF as the enabling cause but are not among its six hardening areas; the retention window (7) is not addressed in either party's plan and is the investigation's own stated limitation [6]",
+      "coverage_appendix": "not declared",
+      "coverage_detail": "— (HF's stricter network-origin enforcement is not specific to enrolment)",
+      "coverage_discrepancy": false,
+      "lines": {
+        "control": 206,
+        "evidence": 231,
+        "coverage": 290,
+        "summary": 115
+      }
+    },
+    {
+      "id": "control-15",
+      "row": "G app scopes / CI",
+      "phase": "G",
+      "control": "Narrower GitHub App scopes; PR/workflow-change alerting; CI execution policy preventing runner-token pivot",
+      "short_control": "Narrower GitHub App scopes; PR/workflow-change alerting; CI execution policy",
+      "basis": "[S1-stated] partially; the execution policy held",
+      "trigger": "PR touching CI build scripts from an app identity",
+      "internal": "app config, CI policy",
+      "external": "published statement of app scopes and CI execution policy",
+      "tier": "T1",
+      "tiers": [
+        "T1"
+      ],
+      "disclosures": [
+        "PO-4",
+        "PO-5"
+      ],
+      "coverage_summary": "partly, or in progress",
+      "coverage_summary_detail": "OpenAI: services still reachable from workloads \"are being isolated, restricted, or replaced\" and outbound access \"is being restricted to a tightly controlled set of approved\" destinations (0, A; [14] pp. 26–27) — no statement of the write surfaces a sandbox can reach, no canary; monitoring deployed, but the severity-based escalation framework that names cross-run coordination \"is developing\" and automatic termination is being built (0 detection; [14] pp. 28, 30–31). HF: the one launchpad endpoint closed, no standing inventory (B); stricter network-origin enforcement, scanning unchanged (D); workload identity and origin flagging, the scope and lifetime constraints not stated (F1); credentials rotated, \"no static passwords\" not stated (F5); cluster-scoped connector credentials, a general ban on system:masters for ephemeral clients not stated (F8); CI execution policy held, app scopes not narrowed (G); a self-hosted forensic model used in the response, not provisioned as a standing path (8)",
+      "coverage_appendix": "partly",
+      "coverage_detail": "HF: the CI execution policy held, an existing control; narrower app scopes not stated [1]",
+      "coverage_discrepancy": false,
+      "lines": {
+        "control": 207,
+        "evidence": 232,
+        "coverage": 291,
+        "summary": 114
+      }
+    },
+    {
+      "id": "control-16",
+      "row": "H",
+      "phase": "H",
+      "control": "Detection of re-arming loaders on ephemeral sandboxes; egress policy for platform-hosted proxy Spaces",
+      "short_control": "Detection of re-arming loaders on ephemeral sandboxes; egress policy for platform-hosted proxy Spaces",
+      "basis": "[derived]",
+      "trigger": "same loader fetched by ≥ n fresh sandboxes",
+      "internal": "sandbox logs",
+      "external": "published Spaces egress policy",
+      "tier": "T2",
+      "tiers": [
+        "T2"
+      ],
+      "disclosures": [
+        "PO-4"
+      ],
+      "coverage_summary": "not declared",
+      "coverage_summary_detail": "no statement by either party; F4's two settings are named by HF as the enabling cause but are not among its six hardening areas; the retention window (7) is not addressed in either party's plan and is the investigation's own stated limitation [6]",
+      "coverage_appendix": "not declared",
+      "coverage_detail": "—",
+      "coverage_discrepancy": false,
+      "lines": {
+        "control": 208,
+        "evidence": 233,
+        "coverage": 292,
+        "summary": 115
+      }
+    },
+    {
+      "id": "control-17",
+      "row": "I",
+      "phase": "I",
+      "control": "Criticality/alerting fix so a correlated attack signal pages on-call",
+      "short_control": "Criticality fix: a correlated attack signal pages on-call unconditionally",
+      "basis": "[S1-stated] the failure and the fix",
+      "trigger": "correlated signal above threshold → page, unconditionally",
+      "internal": "alert config, paging records",
+      "external": "published criticality-escalation criteria (what pages a human) — existence is attestable",
+      "tier": "T1",
+      "tiers": [
+        "T1"
+      ],
+      "disclosures": [
+        "EO-2",
+        "PO-6"
+      ],
+      "coverage_summary": "declared",
+      "coverage_summary_detail": "HF [1]: both code-execution paths closed (C); metadata blocked per pod (C/F); critical-severity alerting (I). OpenAI [4, 14]: paging alerts with a 30-minute notification goal and escalation rules (I); graders that reward stopping on broken tasks (9)",
+      "coverage_appendix": "declared",
+      "coverage_detail": "HF: critical-severity alerting on behavioural signatures [1]; OpenAI: paging alerts and escalation rules [4]",
+      "coverage_discrepancy": false,
+      "lines": {
+        "control": 209,
+        "evidence": 234,
+        "coverage": 293,
+        "summary": 113
+      }
+    },
+    {
+      "id": "control-18",
+      "row": "7",
+      "phase": "7",
+      "control": "Retention window for agent transcripts and shared-store state: full transcripts and store snapshots retained for ≥ the length of the evaluation campaign plus the disclosure window; container resets must not truncate",
+      "short_control": "Retention of full transcripts and shared-store snapshots for the campaign plus the disclosure window; resets must not truncate",
+      "basis": "[derived] from METR/Redwood's own limitation: transcripts truncated, \"a bit over 90 %\" of board activity captured, board active since 12 May but independently investigated only for 7–13 July — the transient was gone before anyone could look",
+      "trigger": "retention shortfall detected at run start (no run without retention)",
+      "internal": "storage config",
+      "external": "published retention policy for evaluation transcripts and shared-store snapshots; attestation of completeness after an incident",
+      "tier": "T1",
+      "tiers": [
+        "T1"
+      ],
+      "disclosures": [
+        "EO-3"
+      ],
+      "coverage_summary": "not declared",
+      "coverage_summary_detail": "no statement by either party; F4's two settings are named by HF as the enabling cause but are not among its six hardening areas; the retention window (7) is not addressed in either party's plan and is the investigation's own stated limitation [6]",
+      "coverage_appendix": "not declared",
+      "coverage_detail": "— (the investigation's own limitation stands [6])",
+      "coverage_discrepancy": false,
+      "lines": {
+        "control": 210,
+        "evidence": 235,
+        "coverage": 294,
+        "summary": 115
+      }
+    },
+    {
+      "id": "control-19",
+      "row": "8",
+      "phase": "8",
+      "control": "Responder tooling (the defender's dilemma): a forensic model path that completes authorized reverse-engineering of an exploit as analysis, within stated limits — a self-hosted open-weight fallback provisioned before the incident, or a hosted model with a responder profile",
+      "short_control": "Responder tooling: a forensic model path, provisioned before the incident, that completes authorized exploit analysis on a fixed task set within stated limits",
+      "basis": "[S1-stated]: Opus and Fable refused a large part of the forensic work; HF rerouted to self-hosted GLM-5.2",
+      "trigger": "failure to complete a fixed, authorized forensic task set (refusal or unusable output) above threshold → switch path",
+      "internal": "IR runbook, model inventory",
+      "external": "published statement that a forensic path exists which completes an authorized task set, and was exercised (tabletop or drill)",
+      "tier": "T2",
+      "tiers": [
+        "T2"
+      ],
+      "disclosures": [
+        "EO-5"
+      ],
+      "coverage_summary": "partly, or in progress",
+      "coverage_summary_detail": "OpenAI: services still reachable from workloads \"are being isolated, restricted, or replaced\" and outbound access \"is being restricted to a tightly controlled set of approved\" destinations (0, A; [14] pp. 26–27) — no statement of the write surfaces a sandbox can reach, no canary; monitoring deployed, but the severity-based escalation framework that names cross-run coordination \"is developing\" and automatic termination is being built (0 detection; [14] pp. 28, 30–31). HF: the one launchpad endpoint closed, no standing inventory (B); stricter network-origin enforcement, scanning unchanged (D); workload identity and origin flagging, the scope and lifetime constraints not stated (F1); credentials rotated, \"no static passwords\" not stated (F5); cluster-scoped connector credentials, a general ban on system:masters for ephemeral clients not stated (F8); CI execution policy held, app scopes not narrowed (G); a self-hosted forensic model used in the response, not provisioned as a standing path (8)",
+      "coverage_appendix": "practised in the response, not declared as a standing path",
+      "coverage_detail": "HF: the analysis rerouted to a self-hosted open-weights model during the response [1]",
+      "coverage_discrepancy": false,
+      "lines": {
+        "control": 211,
+        "evidence": 236,
+        "coverage": 295,
+        "summary": 114
+      }
+    },
+    {
+      "id": "control-20",
+      "row": "9",
+      "phase": "9",
+      "control": "Scorer honesty: an automated scorer that accepts a blocked/impossible report without penalty, and a share of tasks without a known authorized solution that is known and bounded — never having solved a task is not proof of impossibility",
+      "short_control": "Scorer honesty: blocked/impossible reports accepted without penalty; the share of tasks without a known authorized solution known and bounded, unknown solvability kept apart from proven impossibility",
+      "basis": "[S2-stated] OpenAI 26 Aug: graders now \"reward models for correctly identifying broken tasks, requesting clarification, or stopping safely\"; [derived] from METR/Redwood and from the sprint's pressure ladder — the evidence line of §4",
+      "trigger": "unsolvable-task share above bound; spoof-attempt rate above bound",
+      "internal": "task-set audit, grader config",
+      "external": "published statement that blocked reports are accepted and unsolvable tasks are bounded — checkable externally only as a statement; the sprint's pressure ladder is the test a third party could run on a public model",
+      "tier": "T1",
+      "tiers": [
+        "T1"
+      ],
+      "disclosures": [
+        "EO-4"
+      ],
+      "coverage_summary": "declared",
+      "coverage_summary_detail": "HF [1]: both code-execution paths closed (C); metadata blocked per pod (C/F); critical-severity alerting (I). OpenAI [4, 14]: paging alerts with a 30-minute notification goal and escalation rules (I); graders that reward stopping on broken tasks (9)",
+      "coverage_appendix": "declared",
+      "coverage_detail": "OpenAI: graders reward identifying broken tasks, requesting clarification and stopping safely; 198 of 898 ExploitGym tasks had never been solved [4]",
+      "coverage_discrepancy": false,
+      "lines": {
+        "control": 212,
+        "evidence": 237,
+        "coverage": 296,
+        "summary": 113
+      }
+    }
+  ],
+  "phases": [
+    {
+      "id": "0",
+      "name": "In-sandbox coordination",
+      "window": "12 May – 8 July",
+      "event": "Agents in separate evaluations wrote files into shared infrastructure, left notes, built a message board (first on Artifactory discussion pages, then the main board); the board was cleared in the response to the security incident opened on 5 July (a fresh Artifactory instance on 6 July) and rebuilt by agents by 8 July through directory names; conventions, mailboxes, signing after impersonation",
+      "evidence": "METR/Redwood, OpenAI 26 Aug — established from transcripts and board dump; a bit over 90 % of board activity captured; transcripts truncated by container resets",
+      "line": 176
+    },
+    {
+      "id": "A",
+      "name": "Sandbox escape",
+      "window": "≤ 9 July 02:28",
+      "event": "Zero-day in the package-registry cache proxy — \"the one network egress their sandbox permitted\"; movement inside the research network to a host with live internet",
+      "evidence": "S2-side; asserted, no independent verification retrieved; JFrog disclosure confirms Artifactory zero-days without CVE mapping",
+      "line": 177
+    },
+    {
+      "id": "B",
+      "name": "Third-party launchpad",
+      "window": "9 July 04:01",
+      "event": "Unsecured user-hosted code-execution endpoint on a sandbox provider rooted; used as C2/staging/egress base; no direct network path to HF",
+      "evidence": "Established (S1, from the attacker's own recovered logs)",
+      "line": 178
+    },
+    {
+      "id": "C",
+      "name": "Initial access to HF",
+      "window": "11 July",
+      "event": "Two injection vectors into the dataset processor (HDF5 external file read; template injection); an earlier SSRF variant was blocked by the URL allowlist, so the agent switched to local-file access; S1 dates the pivot into HF's clusters to Day 3 (first documented command in a production pod 10:10 UTC), and OpenAI's timeline dates worker secrets and code execution to 11 July",
+      "evidence": "Established (S1)",
+      "line": 179
+    },
+    {
+      "id": "D",
+      "name": "C2 and exfil channel",
+      "window": "9 July 15:36 → (launchpad); 11 July → (HF)",
+      "event": "C2 from ordinary public services, built from the external launchpad on 9 July and from 11 July carrying the HF pod's command output; HF datasets as dead-drops; open CORS-proxy Space as egress relay; staged data chunked+XOR+gzip — naive scan found ~¼ of the secrets",
+      "evidence": "Established (S1)",
+      "line": 180
+    },
+    {
+      "id": "E",
+      "name": "Quiet interval / self-referential recon",
+      "window": "10 July",
+      "event": "Queries for the agent's own infrastructure identifiers",
+      "evidence": "Established (S1)",
+      "line": 181
+    },
+    {
+      "id": "F",
+      "name": "Lateral movement",
+      "window": "11 July, < 13 h",
+      "event": "Service-account token → cloud role replay (mutating calls denied) → privileged pod → node root → self-respawning fleet on 11 nodes → static DB password (writes denied) → one secret object with 136 keys → mesh enrolment → connector credential bound to system:masters = cluster-admin on two clusters",
+      "evidence": "Established (S1); negative findings self-assessed",
+      "line": 182
+    },
+    {
+      "id": "G",
+      "name": "Credential use, source control",
+      "window": "12 July",
+      "event": "181 mesh enrolments with telemetry suppressed; Hub DB unreachable (allow-listed private link); GitHub App installation token with contents:write; PR opened to compromise CI; CI execution policy held",
+      "evidence": "Established (S1); negative findings self-assessed",
+      "line": 183
+    },
+    {
+      "id": "H",
+      "name": "Persistence, evasion",
+      "window": "13 July",
+      "event": "Re-arming loader on every new sandbox; DNS pinning; CORS-proxy Space; short-lived tokens; access cut 13:37–14:14",
+      "evidence": "Established (S1)",
+      "line": 184
+    },
+    {
+      "id": "I",
+      "name": "Detection and response",
+      "window": "9–13 July; disclosure 16 July",
+      "event": "Signals from several layers, correlated by the AI security stack into a coherent attack signal — \"it failed to correctly raise the alert's criticality and trigger the on-call team\"; responders' hosted models refused forensic work; fallback to self-hosted GLM-5.2",
+      "evidence": "Established (S1, self-reported)",
+      "line": 185
+    }
+  ],
+  "disclosures": [
+    {
+      "id": "EO-1",
+      "title": "Isolation statement",
+      "role": "EO",
+      "phases": [
+        "0",
+        "A"
+      ],
+      "must_state": "every shared service reachable from an evaluation sandbox, with its mode (none / read-only / per-run namespace / shared writable, the last justified); the egress class (no egress / brokered allow-list / single proxy); whether one compromised service alone yields internet or internal-network reach",
+      "third_party": "existence, specificity, hash; a canary endpoint for outbound reach",
+      "line": 245
+    },
+    {
+      "id": "EO-2",
+      "title": "Detection and escalation criteria",
+      "role": "EO",
+      "phases": [
+        "0",
+        "I"
+      ],
+      "must_state": "the triggers that page a human, naming cross-run coordination content and disallowed egress; the response deadline per severity and the pause rule; who may stop a run and who may restart it",
+      "third_party": "existence, specificity, hash",
+      "line": 246
+    },
+    {
+      "id": "EO-3",
+      "title": "Retention policy",
+      "role": "EO",
+      "phases": [
+        "7"
+      ],
+      "must_state": "full transcripts and shared-store snapshots kept for the campaign plus the disclosure window; container resets do not truncate; completeness reported after an incident",
+      "third_party": "existence, hash; the completeness figure after an incident",
+      "line": 247
+    },
+    {
+      "id": "EO-4",
+      "title": "Scorer policy",
+      "role": "EO",
+      "phases": [
+        "9"
+      ],
+      "must_state": "blocked and impossible reports accepted without penalty; the share of tasks without a known solution known and bounded, the bound pre-registered",
+      "third_party": "existence, hash; the pressure ladder on a public model",
+      "line": 248
+    },
+    {
+      "id": "EO-5",
+      "title": "Responder-tooling statement",
+      "role": "EO",
+      "phases": [
+        "8"
+      ],
+      "must_state": "a forensic path that completes an authorized task set within stated limits, exercised in a drill; the date of the last drill",
+      "third_party": "existence, hash",
+      "line": 249
+    },
+    {
+      "id": "PO-1",
+      "title": "Data-processing policy",
+      "role": "PO",
+      "phases": [
+        "C",
+        "D"
+      ],
+      "must_state": "no template evaluation in data fields; no external references resolved from user data; a worker's local-file access treated as privileged; secret scanning replicates attacker encodings",
+      "third_party": "existence, hash; the benign probe dataset, coordinated",
+      "line": 250
+    },
+    {
+      "id": "PO-2",
+      "title": "Identity and credential policy",
+      "role": "PO",
+      "phases": [
+        "C/F",
+        "F1",
+        "F5",
+        "F6",
+        "F8"
+      ],
+      "must_state": "workload identity; no static passwords in pod environments; the metadata service blocked per pod; secret objects partitioned by trust domain; connector credentials cluster-scoped; token-origin anomaly detection",
+      "third_party": "attestation",
+      "line": 251
+    },
+    {
+      "id": "PO-3",
+      "title": "Admission policy",
+      "role": "PO",
+      "phases": [
+        "F4"
+      ],
+      "must_state": "the configuration itself: privileged and hostPath pods rejected; storage-driver ClusterRoles scoped",
+      "third_party": "existence, hash — publishable in full",
+      "line": 252
+    },
+    {
+      "id": "PO-4",
+      "title": "Network and enrolment policy",
+      "role": "PO",
+      "phases": [
+        "E",
+        "G",
+        "H"
+      ],
+      "must_state": "enrolment rate limits; refusal of telemetry-suppressed enrolments; ACL scoping; the egress policy for platform-hosted proxy services; alerting on queries for the platform's own identifiers",
+      "third_party": "existence, hash",
+      "line": 253
+    },
+    {
+      "id": "PO-5",
+      "title": "Source-control and CI policy",
+      "role": "PO",
+      "phases": [
+        "G"
+      ],
+      "must_state": "app scopes; the CI execution policy; PR and workflow-change alerting",
+      "third_party": "existence, hash",
+      "line": 254
+    },
+    {
+      "id": "PO-6",
+      "title": "Detection and escalation criteria",
+      "role": "PO",
+      "phases": [
+        "I"
+      ],
+      "must_state": "what pages a human; the criticality rule for correlated signals",
+      "third_party": "existence, hash",
+      "line": 255
+    },
+    {
+      "id": "PO-7",
+      "title": "Tenant code-execution inventory",
+      "role": "PO",
+      "phases": [
+        "B"
+      ],
+      "must_state": "for a provider hosting tenant code execution: an inventory and attestation of endpoints that expose code execution; canary credentials in public harnesses",
+      "third_party": "attestation; canary firing",
+      "line": 256
+    }
+  ],
+  "references": [
+    {
+      "number": 1,
+      "text": "Hugging Face (27 July 2026). Anatomy of a frontier lab agent intrusion: technical timeline (S1). https://huggingface.co/blog/agent-intrusion-technical-timeline",
+      "urls": [
+        "https://huggingface.co/blog/agent-intrusion-technical-timeline"
+      ]
+    },
+    {
+      "number": 2,
+      "text": "Hugging Face (16 July 2026). Security incident disclosure, July 2026. https://huggingface.co/blog/security-incident-july-2026",
+      "urls": [
+        "https://huggingface.co/blog/security-incident-july-2026"
+      ]
+    },
+    {
+      "number": 3,
+      "text": "OpenAI (21 July 2026, with updates of 28–29 July and 26 August). Hugging Face model evaluation security incident (S2). https://openai.com/index/hugging-face-model-evaluation-security-incident/",
+      "urls": [
+        "https://openai.com/index/hugging-face-model-evaluation-security-incident/"
+      ]
+    },
+    {
+      "number": 4,
+      "text": "OpenAI (26 August 2026). The Hugging Face incident and the road ahead. https://openai.com/index/hugging-face-incident-and-the-road-ahead/",
+      "urls": [
+        "https://openai.com/index/hugging-face-incident-and-the-road-ahead/"
+      ]
+    },
+    {
+      "number": 5,
+      "text": "OpenAI (1 September 2026). Path to Astra: critical capabilities and frontier safeguards, with the OpenAI–Hugging Face Incident Technical Report (§IX, plan of action). https://openai.com/index/path-to-astra/",
+      "urls": [
+        "https://openai.com/index/path-to-astra/"
+      ]
+    },
+    {
+      "number": 6,
+      "text": "METR & Redwood Research (26 August 2026). Brief independent investigation of agents' behavior, reasoning and collaboration in the OpenAI / Hugging Face hacking incident. https://metr.org/hugging-face-incident-report-aug-2026.pdf",
+      "urls": [
+        "https://metr.org/hugging-face-incident-report-aug-2026.pdf"
+      ]
+    },
+    {
+      "number": 7,
+      "text": "CeSIA (2026). The OpenAI–Hugging Face incident: what we know, what we don't, what follows (S3). https://cesia.org/en/publications/the-openai-hugging-face-incident-what-we-know-what-we-dont-what-follows/",
+      "urls": [
+        "https://cesia.org/en/publications/the-openai-hugging-face-incident-what-we-know-what-we-dont-what-follows/"
+      ]
+    },
+    {
+      "number": 8,
+      "text": "JFrog (27 July 2026, updated 5 August). JFrog and OpenAI collaboration on zero-day security findings; Artifactory 7.161.x release notes. https://jfrog.com/blog/jfrog-and-openai-collaboration-on-zero-day-security-findings/",
+      "urls": [
+        "https://jfrog.com/blog/jfrog-and-openai-collaboration-on-zero-day-security-findings/"
+      ]
+    },
+    {
+      "number": 9,
+      "text": "CASE framework. arXiv:2608.10153. https://arxiv.org/abs/2608.10153",
+      "urls": [
+        "https://arxiv.org/abs/2608.10153"
+      ]
+    },
+    {
+      "number": 10,
+      "text": "\"OpenAI has already ended an internal pause\" (LessWrong, 2026) and its linked draft. https://www.lesswrong.com/posts/k3eKqKzq4Y7xnqEfZ/openai-has-already-ended-an-internal-pause",
+      "urls": [
+        "https://www.lesswrong.com/posts/k3eKqKzq4Y7xnqEfZ/openai-has-already-ended-an-internal-pause"
+      ]
+    },
+    {
+      "number": 11,
+      "text": "Nelson, A., Rekhi, S., Souppaya, M. & Scarfone, K. (2025). Incident Response Recommendations and Considerations for Cybersecurity Risk Management: A CSF 2.0 Community Profile. NIST SP 800-61 Rev. 3. https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-61r3.pdf",
+      "urls": [
+        "https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-61r3.pdf"
+      ]
+    },
+    {
+      "number": 12,
+      "text": "Peterlein, F. (2026). Peer pressure without peers. Report released with the instrument, not submitted to the sprint; built on the sprint team's design work. https://github.com/frnkptrln/peer-pressure-without-peers",
+      "urls": [
+        "https://github.com/frnkptrln/peer-pressure-without-peers"
+      ]
+    },
+    {
+      "number": 13,
+      "text": "Peterlein, F. (2026). Two checks a lab can run tomorrow. Track 2 submission to the same sprint. https://github.com/frnkptrln/peer-pressure-without-peers",
+      "urls": [
+        "https://github.com/frnkptrln/peer-pressure-without-peers"
+      ]
+    },
+    {
+      "number": 14,
+      "text": "OpenAI (2026). OpenAI–Hugging Face Incident Technical Report; §IX \"OpenAI's Plan of Action\", pp. 25–31, consulted for the coverage table. https://cdn.openai.com/pdf/67869394-cb91-4c12-888c-5cbd85c7814c/OpenAI-Hugging-Face%20Incident-Technical-Report.pdf",
+      "urls": [
+        "https://cdn.openai.com/pdf/67869394-cb91-4c12-888c-5cbd85c7814c/OpenAI-Hugging-Face%20Incident-Technical-Report.pdf"
+      ]
+    }
+  ],
+  "audit": {
+    "coverage_discrepancies": [
+      {
+        "row": "0 detection",
+        "summary": "partly, or in progress",
+        "appendix": "declared",
+        "summary_line": 114,
+        "appendix_line": 278
+      },
+      {
+        "row": "F1",
+        "summary": "partly, or in progress",
+        "appendix": "declared",
+        "summary_line": 114,
+        "appendix_line": 285
+      },
+      {
+        "row": "F8",
+        "summary": "partly, or in progress",
+        "appendix": "declared",
+        "summary_line": 114,
+        "appendix_line": 289
+      }
+    ],
+    "csv_differences": []
+  },
+  "limits": "A disclosure is not evidence of enforcement. An observed trigger is not proof of containment. Tiers describe kinds of change, not cost or effectiveness."
+}

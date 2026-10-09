@@ -1,0 +1,6 @@
+{
+  "name": "control-matrix-reader",
+  "private": true,
+  "scripts": {"test": "node --test tests/model.test.mjs", "test:browser": "node tests/browser-smoke.cjs"},
+  "devDependencies": {"playwright": "1.62.1"}
+}
