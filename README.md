@@ -20,6 +20,59 @@ Individual submission by Frank Peterlein to **Track 1 ("Containment: what standa
 
 The CSV files are exported from the tables in the paper; the paper is authoritative where they differ.
 
+## Interactive evidence reader
+
+Serve this repository locally, then open <http://localhost:8000/web/>:
+
+```bash
+python3 -m http.server 8000
+```
+
+The reader joins all 20 controls to their evidentiary basis, observable trigger,
+internal/external evidence, phase context, coverage statements and related
+disclosure documents. Search or filter by phase, disclosure role, kind of change,
+or the summary table's coverage label. The current selection and filters have a
+bookmarkable URL; visible rows can be exported as JSON or CSV, and the selected
+control can be printed. Nothing is sent to a server beyond loading the local
+static files. No deployment is performed by the workflow.
+
+**Source disagreements remain visible.** The paper's summary table calls
+`0 detection`, `F1` and `F8` “partly, or in progress”, while Appendix E calls
+them “declared”. The reader displays both, links to their exact source lines,
+and offers a filter for these disagreements. It does not reconcile them or
+quietly upgrade a declaration into evidence of enforcement. All six CSV exports
+currently match their corresponding paper tables after stripping inline markup.
+
+The reader uses the paper revision pinned in `reader_source.json`; source links
+point to that immutable commit. It is a view of this repository's paper, not a
+fresh review of the external incident sources. Phase-level links from Table D1
+retain both controls for repeated phases `0` and `G`. Tiers describe kinds of
+change, not costs, rankings or measured effectiveness.
+
+Build and check with Python 3.10+ and Node 22+:
+
+```bash
+python3 scripts/build_reader.py          # deterministic web/data.json
+python3 scripts/build_reader.py --check  # detect stale output or changed source
+python3 -m unittest discover -s tests -v
+node --test tests/model.test.mjs
+npm ci
+npx playwright install chromium
+npm run test:browser
+```
+
+The builder reads the seven relevant Markdown tables, checks row counts and
+ordered keys before joining, compares six CSV exports cell by cell, and records
+source hashes. A changed paper requires explicit review and a new commit/hash
+pin before rebuilding; the builder never edits the paper or CSVs. Generated data
+and exported JSON retain both coverage statements and provenance. The browser
+tests cover desktop/mobile filtering, bookmarks, source links, downloads,
+printing-state restoration, and empty/error states. Physical phones, other
+browsers, printed-paper layout and assistive-technology use remain unverified.
+
+CI publishes a 14-day `evidence-reader` artifact containing the static reader
+and its source documents. Extract it, serve its root as above, and open `/web/`.
+
 ## The argument in one paragraph
 
 The intrusion is documented well enough — by the victim's forensic timeline, the attacker-side lab's disclosures and an independent investigation — to key a matrix on nine phases from the sandbox escape to detection, plus the two months of in-sandbox coordination that preceded it. For most phases the victim has already named the control that would have interrupted it; the hard column is not *which control* but *what a third party could check*. Almost every named control is observable only from inside the lab's network. The matrix therefore splits verifiability into internally auditable and externally attestable evidence, and the externally attestable column is short: published policy configuration with its hash, attestations by a named auditor, canary schemes whose firing a third party observes, published escalation criteria, published retention policy for agent transcripts. The paper writes that column out as a standard — twelve documents split between evaluation operator and platform operator, an attestation scope and a canary protocol — and checks it against what Hugging Face and OpenAI have declared since the incident: the rows they named as causes are declared; the write surface, the retention window, secret partitioning, an enrolment policy and a standing forensic path are declared by no one. None of the set needs a new system; none of it shows enforcement; cost is not measured. Row 9 (scorer honesty) carries the empirical result of the companion Track 5 experiment: [peer-pressure-without-peers](https://github.com/frnkptrln/peer-pressure-without-peers).
