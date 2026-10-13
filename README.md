@@ -4,6 +4,8 @@ Which controls would have interrupted each documented phase of the July 2026 int
 
 Individual submission by Frank Peterlein to **Track 1 ("Containment: what standard would have stopped this?")** of the Apart Research × CeSIA AI Incident Response Sprint, 11–13 September 2026. Written with Claude (Anthropic); every cell's evidentiary basis is marked `[S1-stated]` (the victim's own timeline), `[S2-stated]` (OpenAI's account) or `[derived]` (an inference from documented mechanics), and no cell rests on a claim not traceable to a listed source.
 
+**Submitted state.** The paper as submitted to the sprint is commit [`450ddf5`](https://github.com/frnkptrln/control-by-attack-phase-matrix/commit/450ddf5a34a8f69cbab16db7618b4714200b771b) (13 September 2026), tagged `submitted`; the evidence reader below is pinned to it. Everything after it is dated and says what it changes relative to that state.
+
 ## Contents
 
 | path | what |
