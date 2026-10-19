@@ -82,6 +82,35 @@ class ReaderDataTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "reader_source"):
                 reader.build(root)
 
+    def test_csv_rows_with_extra_or_missing_cells_are_rejected(self):
+        for filename in reader.EXPORTS.values():
+            for change in ("extra", "missing"):
+                with self.subTest(file=filename, change=change), tempfile.TemporaryDirectory() as temporary:
+                    root = self.copy_root(temporary)
+                    path = root / "matrix" / filename
+                    rows = list(csv.reader(io.StringIO(path.read_text())))
+                    if change == "extra":
+                        rows[1].append("An unexpected export cell")
+                    else:
+                        rows[1].pop()
+                    with path.open("w", newline="") as stream:
+                        csv.writer(stream).writerows(rows)
+                    with self.assertRaisesRegex(ValueError, f"CSV row shape changed: matrix/{filename}; row 1"):
+                        reader.build(root)
+
+    def test_csv_explicit_empty_cells_remain_auditable(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = self.copy_root(temporary)
+            path = root / "matrix/matrix_C1_control_basis_trigger.csv"
+            rows = list(csv.reader(io.StringIO(path.read_text())))
+            rows[1][-1] = ""
+            with path.open("w", newline="") as stream:
+                csv.writer(stream).writerows(rows)
+            differences = reader.build(root)["audit"]["csv_differences"]
+            self.assertEqual(len(differences), 1)
+            self.assertEqual(differences[0]["column"], "Observable trigger")
+            self.assertEqual(differences[0]["csv"], "")
+
     def test_reordered_control_rows_cannot_be_misjoined(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = self.copy_root(temporary)
