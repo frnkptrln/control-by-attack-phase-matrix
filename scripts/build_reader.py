@@ -137,6 +137,8 @@ def build(root=ROOT):
         if reader.fieldnames != tables[name]["headers"] or len(rows) != len(tables[name]["rows"]):
             raise ValueError(f"CSV shape changed: {path}; review before rebuilding")
         for i, (exported, paper) in enumerate(zip(rows, tables[name]["rows"]), 1):
+            if None in exported or any(value is None for value in exported.values()):
+                raise ValueError(f"CSV row shape changed: {path}; row {i}; review before rebuilding")
             for column in reader.fieldnames:
                 if plain(exported[column]) != paper["values"][column]:
                     csv_differences.append({"file": path, "row": i, "column": column,
