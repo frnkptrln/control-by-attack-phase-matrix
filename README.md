@@ -85,4 +85,4 @@ The intrusion is documented well enough — by the victim's forensic timeline, t
 
 ## License
 
-Paper and matrix: CC BY 4.0 (`LICENSE`).
+Paper and matrix: CC BY 4.0 (`LICENSE`). Code (the scripts, styles and markup in `web/`, plus `scripts/`, `tests/` and `push.sh`): MIT (`LICENSES/MIT.txt`). The matrix data and texts inside the reader (`web/data.json`, the prose in `web/index.html`) stay CC BY 4.0 with the paper.
